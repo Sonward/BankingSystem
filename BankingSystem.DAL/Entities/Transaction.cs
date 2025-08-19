@@ -10,9 +10,12 @@ namespace BankingSystem.DAL.Entities
     {
         public int Id { get; set; }
         public string TargetAccountNumber {  get; set; }
+        public int AccountId { get; set; }
         public decimal Amount { get; set; }
         public TransactinType TransactinType { get; set; }
         public TransactionStatus TransactionStatus { get; set; }
         public DateTime CreationTime { get; set; } = DateTime.UtcNow;
+
+        public Account DindedAccount { get; set; }
     }
 }
