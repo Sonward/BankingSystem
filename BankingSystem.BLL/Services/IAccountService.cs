@@ -10,8 +10,8 @@ namespace BankingSystem.BLL.Services
 {
     public interface IAccountService
     {
-        public Task<Account> CreateAccount(AccountCreateRequest createRequest);
-        public Task<Account> GetAccountByNumber(string number);
-        public Task<ICollection<Account>> GetAllAccounts();
+        public Task<AccountDTO> CreateAccountAsync(AccountCreateRequest createRequest);
+        public Task<AccountDTO> GetAccountByNumberAsync(string number);
+        public Task<ICollection<AccountDTO>> GetAllAccountsAsync();
     }
 }

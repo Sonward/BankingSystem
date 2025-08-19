@@ -1,31 +1,35 @@
-﻿using BankingSystem.DAL.Entities;
+﻿using BankingSystem.BLL.Utils;
+using BankingSystem.DAL.Entities;
 using BankingSystem.DAL.Repositories;
 using BankingSystem.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingSystem.BLL.Services.Implementation
 {
-    internal class AccountService(IAccountRepository accountRepository) : IAccountService
+    public class AccountService(IAccountRepository accountRepository) : IAccountService
     {
-        public async Task<Account> CreateAccount(AccountCreateRequest createRequest)
+        public async Task<AccountDTO> CreateAccountAsync(AccountCreateRequest createRequest)
         {
+            if (createRequest is null) throw new ArgumentNullException(nameof(createRequest));
+            if (string.IsNullOrWhiteSpace(createRequest.OwnerName))
+                throw new ArgumentException("OwnerName must be provided.", nameof(createRequest.OwnerName));
+
             var result = await accountRepository.CreateAsync(new Account() 
             { 
                 OwnerName = createRequest.OwnerName,
                 Balance = createRequest.Balance
             });
 
-            return result;
+            return CustomMapper.AccountToDto(result);
         }
 
-        public async Task<Account> GetAccountByNumber(string number)
-            => await accountRepository.GetByAccountNumberAsync(number);
+        public async Task<AccountDTO> GetAccountByNumberAsync(string number)
+        {
+            if (string.IsNullOrWhiteSpace(number)) throw new ArgumentException("Account number must be provided.", nameof(number));
+            
+            return CustomMapper.AccountToDto(await accountRepository.GetByAccountNumberAsync(number));
+        }
 
-        public async Task<ICollection<Account>> GetAllAccounts()
-            => await accountRepository.GetAllAsync();
+        public async Task<ICollection<AccountDTO>> GetAllAccountsAsync()
+            => (await accountRepository.GetAllAsync()).Select(a => CustomMapper.AccountToDto(a)).ToList();
     }
 }

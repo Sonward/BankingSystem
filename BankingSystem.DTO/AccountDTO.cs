@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BankingSystem.DTO
+﻿namespace BankingSystem.DTO
 {
-    internal class AccountDTO
-    {
-
-    }
+    public record AccountDTO(int Id, string Number, string OwnerName, decimal Balance, DateTime CreationTime);
 }

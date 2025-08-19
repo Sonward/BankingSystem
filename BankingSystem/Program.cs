@@ -1,7 +1,17 @@
+using BankingSystem.BLL.Extencions;
+using BankingSystem.BLL.Services;
+using BankingSystem.BLL.Services.Implementation;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.RegisterDbContext(builder.Configuration.GetConnectionString("DefaultConnection"));
 
+builder.Services.AddRepositories();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+
+// Add services to the container.
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
