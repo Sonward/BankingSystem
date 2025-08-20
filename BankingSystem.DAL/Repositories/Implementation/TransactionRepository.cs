@@ -25,7 +25,7 @@ namespace BankingSystem.DAL.Repositories.Implementation
             if (string.IsNullOrWhiteSpace(accountNumber))
                 throw new ArgumentException("Account number cannot be null or empty", nameof(accountNumber));
 
-            return await dbContext.Transactions.Where(t => t.TargetAccountNumber == accountNumber).ToListAsync();
+            return await dbContext.Transactions.Where(t => t.AccountNumber == accountNumber).ToListAsync();
         }
     }
 }

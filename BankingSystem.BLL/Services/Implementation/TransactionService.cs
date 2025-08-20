@@ -19,7 +19,7 @@ namespace BankingSystem.BLL.Services.Implementation
 
             var result = await transactionRepository.CreateAsync(new Transaction()
             {
-                TargetAccountNumber = target.Number,
+                AccountNumber = target.Number,
                 Amount = amount,
                 TransactinType = TransactinType.Deposit,
                 TransactionStatus = TransactionStatus.Success
@@ -40,7 +40,7 @@ namespace BankingSystem.BLL.Services.Implementation
 
             var result = await transactionRepository.CreateAsync(new Transaction()
             {
-                TargetAccountNumber = target.Number,
+                AccountNumber = target.Number,
                 Amount = amount,
                 TransactinType = TransactinType.Withdraw,
                 TransactionStatus = TransactionStatus.Success
@@ -65,14 +65,14 @@ namespace BankingSystem.BLL.Services.Implementation
 
             var resultFrom = await transactionRepository.CreateAsync(new Transaction()
             {
-                TargetAccountNumber = targetFrom.Number,
+                AccountNumber = targetFrom.Number,
                 Amount = amount,
                 TransactinType = TransactinType.Transfer,
                 TransactionStatus = TransactionStatus.Success
             });
             var resultTo = await transactionRepository.CreateAsync(new Transaction()
             {
-                TargetAccountNumber = targetTo.Number,
+                AccountNumber = targetTo.Number,
                 Amount = amount,
                 TransactinType = TransactinType.Transfer,
                 TransactionStatus = TransactionStatus.Success

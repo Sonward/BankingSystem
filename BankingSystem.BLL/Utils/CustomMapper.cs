@@ -9,6 +9,6 @@ namespace BankingSystem.BLL.Utils
             => new AccountDTO(account.Id, account.Number, account.OwnerName, account.Balance, account.CreationTime);
 
         public static TransactionDTO TransactionToDto(Transaction transaction)
-            => new TransactionDTO(transaction.Id, transaction.TargetAccountNumber, transaction.Amount, transaction.CreationTime, transaction.TransactinType, transaction.TransactionStatus);
+            => new TransactionDTO(transaction.Id, transaction.AccountNumber, transaction.Amount, transaction.CreationTime, transaction.TransactinType, transaction.TransactionStatus);
     }
 }
