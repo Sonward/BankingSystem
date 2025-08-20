@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36408.4 d17.14
+VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem", "BankingSystem\BankingSystem.csproj", "{958AA0DE-0D32-4EB7-A252-594234A7103D}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem.DAL", "BankingSystem.DAL\BankingSystem.DAL.csproj", "{7F4D4104-B421-4269-AB19-01A5AF9E1C07}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem.DTO", "BankingSystem.DTO\BankingSystem.DTO.csproj", "{9641F1D4-6891-46F4-A3B0-BF0294156B94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem.Tests", "BankingSystem.Tests\BankingSystem.Tests.csproj", "{60B8E366-550C-46E0-8087-BDD4AFA1B85F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9641F1D4-6891-46F4-A3B0-BF0294156B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9641F1D4-6891-46F4-A3B0-BF0294156B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9641F1D4-6891-46F4-A3B0-BF0294156B94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

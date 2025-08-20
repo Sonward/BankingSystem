@@ -1,4 +1,4 @@
-﻿public enum TransactinType
+﻿public enum TransactionType
 {
     Deposit,
     Withdraw,

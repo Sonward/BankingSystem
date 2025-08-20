@@ -19,10 +19,17 @@ namespace BankingSystem.Controllers
 
         [HttpGet("accountNumber")]
         [ProducesResponseType(200, Type = typeof(AccountDTO))]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<AccountDTO>> GetByAccountNumberAsync(string accountNumber)
         {
+            if (string.IsNullOrWhiteSpace(accountNumber))
+                return BadRequest("accountNumber is required.");
+
             var account = await accountService.GetAccountByNumberAsync(accountNumber);
+            if (account == null)
+                return NotFound();
+
             return Ok(account);
         }
 

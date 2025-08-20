@@ -11,6 +11,6 @@ namespace BankingSystem.BLL.Services
     {
         public Task<TransactionDTO> DepositAsync(AccountDTO target, decimal amount);
         public Task<TransactionDTO> WithdrawAsync(AccountDTO target, decimal amount);
-        public Task<ICollection<TransactionDTO>> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount);
+        public Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount);
     }
 }

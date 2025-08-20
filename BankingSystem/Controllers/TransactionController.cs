@@ -26,8 +26,8 @@ namespace BankingSystem.Controllers
         }
 
         [HttpPost("transfer")]
-        [ProducesResponseType(200, Type = typeof(ICollection<TransactionDTO>))]
-        public async Task<ActionResult<ICollection<TransactionDTO>>> Transfer([FromBody] TransferTransactionCreateRequest request)
+        [ProducesResponseType(200, Type = typeof(TransferTransactionDTO))]
+        public async Task<ActionResult<TransferTransactionDTO>> Transfer([FromBody] TransferTransactionCreateRequest request)
         {
             var transaction = await transactionService.TransferAsync(request.TargetFrom, request.TargetTo, request.Amount);
             return Ok(transaction);

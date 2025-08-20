@@ -21,8 +21,7 @@ namespace BankingSystem.BLL.Services.Implementation
             {
                 AccountNumber = target.Number,
                 Amount = amount,
-                TransactinType = TransactinType.Deposit,
-                TransactionStatus = TransactionStatus.Success
+                TransactinType = TransactionType.Deposit
             });
 
             return CustomMapper.TransactionToDto(result);
@@ -42,14 +41,13 @@ namespace BankingSystem.BLL.Services.Implementation
             {
                 AccountNumber = target.Number,
                 Amount = amount,
-                TransactinType = TransactinType.Withdraw,
-                TransactionStatus = TransactionStatus.Success
+                TransactinType = TransactionType.Withdraw
             });
 
             return CustomMapper.TransactionToDto(result);
         }
 
-        public async Task<ICollection<TransactionDTO>> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
+        public async Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
         {
             if (targetFrom is null) throw new ArgumentNullException(nameof(targetFrom));
             if (targetTo is null) throw new ArgumentNullException(nameof(targetTo));
@@ -63,22 +61,15 @@ namespace BankingSystem.BLL.Services.Implementation
             await accountRepository.UpdateAsync(entityFrom);
             await accountRepository.UpdateAsync(entityTo);
 
-            var resultFrom = await transactionRepository.CreateAsync(new Transaction()
+            var result = await transactionRepository.CreateAsync(new TransferTransaction()
             {
                 AccountNumber = targetFrom.Number,
                 Amount = amount,
-                TransactinType = TransactinType.Transfer,
-                TransactionStatus = TransactionStatus.Success
-            });
-            var resultTo = await transactionRepository.CreateAsync(new Transaction()
-            {
-                AccountNumber = targetTo.Number,
-                Amount = amount,
-                TransactinType = TransactinType.Transfer,
-                TransactionStatus = TransactionStatus.Success
-            });
+                TransactinType = TransactionType.Transfer,
+                TransferToAccountNumber = targetTo.Number
+            }) as TransferTransaction;
 
-            return new List<TransactionDTO>(){ CustomMapper.TransactionToDto(resultFrom), CustomMapper.TransactionToDto(resultTo) };
+            return CustomMapper.TransferTransactionToDto(result);
         }
     }
 }

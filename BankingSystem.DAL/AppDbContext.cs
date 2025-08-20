@@ -14,6 +14,9 @@ namespace BankingSystem.DAL
         {
             modelBuilder.Entity<Account>().HasKey(a => a.Id);
             modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Transaction>().ToTable("Transactions");
+            modelBuilder.Entity<TransferTransaction>().ToTable("TransferTransactions");
         }
     }
 }
