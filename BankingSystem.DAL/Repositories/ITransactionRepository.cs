@@ -10,6 +10,7 @@ namespace BankingSystem.DAL.Repositories
     public interface ITransactionRepository
     {
         public Task<Transaction> CreateAsync(Transaction transaction);
-        public Task<ICollection<Transaction>> GetByAccountNumber(string accountNumber);
+        public Task<Transaction> GetByIdAsync(Guid id);
+        public Task<ICollection<Transaction>> GetByAccountNumberAsync(string accountNumber);
     }
 }

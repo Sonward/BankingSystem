@@ -2,7 +2,7 @@
 {
     public class Transaction
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string AccountNumber {  get; set; }
         public decimal Amount { get; set; }
         public virtual TransactionType TransactinType { get; set; }

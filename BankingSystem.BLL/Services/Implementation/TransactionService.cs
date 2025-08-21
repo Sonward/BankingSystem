@@ -9,9 +9,17 @@ namespace BankingSystem.BLL.Services.Implementation
         (IAccountRepository accountRepository,
         ITransactionRepository transactionRepository) : ITransactionService
     {
+        public async Task<TransactionDTO> GetTransactionById(Guid id)
+        {
+            return CustomMapper.TransactionToDto(await transactionRepository.GetByIdAsync(id));
+        }
+
         public async Task<TransactionDTO> DepositAsync(AccountDTO target, decimal amount)
         {
-            if (target is null) throw new ArgumentNullException(nameof(target));
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
             entity.Balance += amount;
@@ -29,7 +37,10 @@ namespace BankingSystem.BLL.Services.Implementation
 
         public async Task<TransactionDTO> WithdrawAsync(AccountDTO target, decimal amount)
         {
-            if (target is null) throw new ArgumentNullException(nameof(target));
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
             if (entity.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
@@ -49,8 +60,14 @@ namespace BankingSystem.BLL.Services.Implementation
 
         public async Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
         {
-            if (targetFrom is null) throw new ArgumentNullException(nameof(targetFrom));
-            if (targetTo is null) throw new ArgumentNullException(nameof(targetTo));
+            if (targetFrom is null)
+            {
+                throw new ArgumentNullException(nameof(targetFrom));
+            }
+            if (targetTo is null)
+            {
+                throw new ArgumentNullException(nameof(targetTo));
+            }
 
             var entityFrom = await accountRepository.GetByAccountNumberAsync(targetFrom.Number);
             var entityTo = await accountRepository.GetByAccountNumberAsync(targetTo.Number);
@@ -69,7 +86,14 @@ namespace BankingSystem.BLL.Services.Implementation
                 TransferToAccountNumber = targetTo.Number
             }) as TransferTransaction;
 
-            return CustomMapper.TransferTransactionToDto(result);
+            return CustomMapper.TransactionToDto(result) as TransferTransactionDTO;
+        }
+
+        public async Task<ICollection<TransactionDTO>> GetByAccountNumber(string accountNumber)
+        {
+            return (await transactionRepository.GetByAccountNumberAsync(accountNumber))
+                .Select(t => CustomMapper.TransactionToDto(t))
+                .ToList();
         }
     }
 }

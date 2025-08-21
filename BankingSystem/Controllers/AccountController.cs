@@ -1,7 +1,7 @@
 ﻿using BankingSystem.BLL.Services;
 using BankingSystem.DTO;
+using BankingSystem.DTO.Requests;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BankingSystem.Controllers
 {

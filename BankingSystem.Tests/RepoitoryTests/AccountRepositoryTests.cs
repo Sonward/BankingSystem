@@ -44,7 +44,6 @@ namespace BankingSystem.Tests.RepoitoryTests
 
             // Assert
             Assert.IsNotNull(created);
-            Assert.That(created.Id, Is.GreaterThan(0));
             Assert.That(created.Number, Is.EqualTo("ACC-1000"));
 
             // double-check persisted

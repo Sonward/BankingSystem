@@ -1,6 +1,6 @@
 ﻿using BankingSystem.BLL.Services;
 using BankingSystem.DTO;
-using BankingSystem.DTO.TransactionRequests;
+using BankingSystem.DTO.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.Controllers
@@ -19,10 +19,24 @@ namespace BankingSystem.Controllers
 
         [HttpPost("withdraw")]
         [ProducesResponseType(200, Type = typeof(TransactionDTO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<TransactionDTO>> Withdraw([FromBody] TransactionCreateRequest request)
         {
-            var transaction = await transactionService.WithdrawAsync(request.Target, request.Amount);
-            return Ok(transaction);
+            try
+            {
+                var transaction = await transactionService.WithdrawAsync(request.Target, request.Amount);
+                return Ok(transaction);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch
+            {
+                return StatusCode(500, new { message = "An internal server error occurred" });
+            }
+            
         }
 
         [HttpPost("transfer")]
