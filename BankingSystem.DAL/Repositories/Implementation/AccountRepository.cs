@@ -1,5 +1,4 @@
 ﻿using BankingSystem.DAL.Entities;
-using BankingSystem.DAL.Exeptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.DAL.Repositories.Implementation
@@ -17,7 +16,7 @@ namespace BankingSystem.DAL.Repositories.Implementation
 
             if (result is null)
             {
-                throw new NotFoundDalException($"Cannot find Account with Id: {id}");
+                throw new ArgumentNullException($"Cannot find Account with Id: {id}");
             }
 
             return result;
@@ -48,7 +47,7 @@ namespace BankingSystem.DAL.Repositories.Implementation
             var entity = await dbContext.Accounts.FindAsync(account.Id);
             if (entity is null)
             {
-                throw new NotFoundDalException($"Cannot find Account with Id: {account.Id}");
+                throw new ArgumentNullException($"Cannot find Account with Id: {account.Id}");
             }
 
             dbContext.Accounts.Entry(entity).CurrentValues.SetValues(account);
@@ -62,7 +61,7 @@ namespace BankingSystem.DAL.Repositories.Implementation
             var entity = await dbContext.Accounts.FindAsync(id);
             if (entity is null)
             {
-                throw new NotFoundDalException($"Cannot find Account with Id: {id}");
+                throw new ArgumentNullException($"Cannot find Account with Id: {id}");
             }
             dbContext.Accounts.Remove(entity);
             

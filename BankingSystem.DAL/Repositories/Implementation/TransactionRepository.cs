@@ -1,5 +1,4 @@
 ﻿using BankingSystem.DAL.Entities;
-using BankingSystem.DAL.Exeptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.DAL.Repositories.Implementation
@@ -25,7 +24,7 @@ namespace BankingSystem.DAL.Repositories.Implementation
 
             if (result is null)
             {
-                throw new NotFoundDalException($"Cannot find Account with Id: {id}");
+                throw new ArgumentNullException($"Cannot find Account with Id: {id}");
             }
 
             return result;
