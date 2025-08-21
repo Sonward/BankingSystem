@@ -18,6 +18,10 @@ namespace BankingSystem.BLL.Services.Implementation
             {
                 throw new ArgumentException("OwnerName must be provided.", nameof(createRequest.OwnerName));
             }
+            if (createRequest.Balance < 0)
+            {
+                throw new ArgumentException("Cannot create account with negative balance");
+            }
 
             var result = await accountRepository.CreateAsync(new Account() 
             { 

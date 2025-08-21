@@ -19,4 +19,8 @@
     <ProjectReference Include="..\BankingSystem.DTO\BankingSystem.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -35,10 +35,27 @@ namespace BankingSystem.Controllers
 
         [HttpPost("create")]
         [ProducesResponseType(200, Type = typeof(AccountDTO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<AccountDTO>> CreateAsync(AccountCreateRequest request)
         {
-            var account = await accountService.CreateAccountAsync(request);
-            return Ok(account);
+            try
+            {
+                var account = await accountService.CreateAccountAsync(request);
+                return Ok(account);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest($"Обов'язковий параметр відсутній: {ex.ParamName}");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest($"Невірний параметр: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Внутрішня помилка сервера");
+            }
         }
     }
 }

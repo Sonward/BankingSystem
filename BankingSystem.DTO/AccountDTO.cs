@@ -6,13 +6,13 @@
             (Guid id, 
             string number, 
             string ownerName, 
-            decimal balamce, 
+            decimal balance, 
             DateTime creationTime)
         {
             Id = id;
             Number = number;
             OwnerName = ownerName;
-            Balance = balamce;
+            Balance = balance;
             CreationTime = creationTime;
         }
 
