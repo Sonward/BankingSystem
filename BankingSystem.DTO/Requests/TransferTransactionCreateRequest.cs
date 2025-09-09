@@ -1,4 +1,6 @@
-﻿namespace BankingSystem.DTO.Requests
+﻿using BankingSystem.DTO.EntityDTO;
+
+namespace BankingSystem.DTO.Requests
 {
     public record TransferTransactionCreateRequest
     {

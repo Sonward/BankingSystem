@@ -1,6 +1,7 @@
-using BankingSystem.BLL.Extencions;
+using BankingSystem.DAL.Extencions;
 using BankingSystem.BLL.Services;
 using BankingSystem.BLL.Services.Implementation;
+using BankingSystem.Common.Extencions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseErrorHandling();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

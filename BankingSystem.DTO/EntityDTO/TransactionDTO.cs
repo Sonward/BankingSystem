@@ -1,4 +1,4 @@
-﻿namespace BankingSystem.DTO
+﻿namespace BankingSystem.DTO.EntityDTO
 {
     public record TransactionDTO
     {

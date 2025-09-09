@@ -1,4 +1,4 @@
-﻿using BankingSystem.DTO;
+﻿using BankingSystem.DTO.EntityDTO;
 
 namespace BankingSystem.BLL.Services
 {

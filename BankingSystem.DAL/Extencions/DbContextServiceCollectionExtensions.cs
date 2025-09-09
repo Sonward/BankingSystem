@@ -4,7 +4,7 @@ using BankingSystem.DAL.Repositories.Implementation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BankingSystem.BLL.Extencions
+namespace BankingSystem.DAL.Extencions
 {
     public static class DbContextServiceCollectionExtensions
     {

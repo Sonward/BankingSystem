@@ -1,5 +1,6 @@
 ﻿using BankingSystem.DAL.Entities;
 using BankingSystem.DTO;
+using BankingSystem.DTO.EntityDTO;
 
 namespace BankingSystem.BLL.Utils
 {

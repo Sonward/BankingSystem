@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem.DTO", "Bankin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem.Tests", "BankingSystem.Tests\BankingSystem.Tests.csproj", "{60B8E366-550C-46E0-8087-BDD4AFA1B85F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem.Common", "BankingSystem.Common\BankingSystem.Common.csproj", "{183CEF91-1CFD-4AEA-AE6A-8C189A272C67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60B8E366-550C-46E0-8087-BDD4AFA1B85F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183CEF91-1CFD-4AEA-AE6A-8C189A272C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183CEF91-1CFD-4AEA-AE6A-8C189A272C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183CEF91-1CFD-4AEA-AE6A-8C189A272C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183CEF91-1CFD-4AEA-AE6A-8C189A272C67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

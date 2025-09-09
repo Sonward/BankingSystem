@@ -1,5 +1,5 @@
 ﻿using BankingSystem.Controllers;
-using BankingSystem.DTO;
+using BankingSystem.DTO.EntityDTO;
 using BankingSystem.DTO.Requests;
 using Microsoft.AspNetCore.Mvc;
 

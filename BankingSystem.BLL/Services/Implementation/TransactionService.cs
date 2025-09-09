@@ -1,7 +1,7 @@
 ﻿using BankingSystem.BLL.Utils;
 using BankingSystem.DAL.Entities;
 using BankingSystem.DAL.Repositories;
-using BankingSystem.DTO;
+using BankingSystem.DTO.EntityDTO;
 
 namespace BankingSystem.BLL.Services.Implementation
 {

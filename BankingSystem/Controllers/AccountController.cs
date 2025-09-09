@@ -1,5 +1,5 @@
 ﻿using BankingSystem.BLL.Services;
-using BankingSystem.DTO;
+using BankingSystem.DTO.EntityDTO;
 using BankingSystem.DTO.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +52,7 @@ namespace BankingSystem.Controllers
             {
                 return BadRequest($"Невірний параметр: {ex.Message}");
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Внутрішня помилка сервера");
             }
