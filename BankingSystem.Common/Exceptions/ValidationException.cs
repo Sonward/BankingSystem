@@ -9,7 +9,7 @@ internal class ValidationException : Exception
         Errors = new List<string> { message };
     }
 
-    public ValidationException(List<string> errors) : base("Помилки валідації")
+    public ValidationException(List<string> errors) : base("Validation errors")
     {
         Errors = errors;
     }

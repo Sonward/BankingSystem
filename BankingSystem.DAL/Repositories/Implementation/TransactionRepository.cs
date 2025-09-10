@@ -1,4 +1,5 @@
-﻿using BankingSystem.DAL.Entities;
+﻿using BankingSystem.Common.Exceptions;
+using BankingSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.DAL.Repositories.Implementation;
@@ -24,7 +25,7 @@ public class TransactionRepository(AppDbContext dbContext) : ITransactionReposit
 
         if (result is null)
         {
-            throw new ArgumentNullException($"Cannot find Account with Id: {id}");
+            throw new NotFoundException($"Cannot find Transaction with Id: {id}");
         }
 
         return result;
@@ -34,9 +35,15 @@ public class TransactionRepository(AppDbContext dbContext) : ITransactionReposit
     {
         if (string.IsNullOrWhiteSpace(accountNumber))
         {
-            throw new ArgumentException("Account number cannot be null or empty", nameof(accountNumber));
+            throw new ArgumentNullException("Account number cannot be null or empty", nameof(accountNumber));
         }
         
-        return await dbContext.Transactions.Where(t => t.AccountNumber == accountNumber).ToListAsync();
+        var result = await dbContext.Transactions.Where(t => t.AccountNumber == accountNumber).ToListAsync();
+        if (result is null)
+        {
+            throw new NotFoundException($"Cannot find Account with Transaction Number: {accountNumber}");
+        }
+
+        return result;
     }
 }

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BankingSystem.Common\BankingSystem.Common.csproj" />
     <ProjectReference Include="..\BankingSystem.DTO\BankingSystem.DTO.csproj" />
   </ItemGroup>
 

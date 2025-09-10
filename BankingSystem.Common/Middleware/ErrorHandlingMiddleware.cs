@@ -26,7 +26,7 @@ public class ErrorHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Необроблена помилка: {ex.Message}", ex.Message);
+            _logger.LogError(ex, $"Unhandled exception: {ex.Message}", ex.Message);
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -41,7 +41,7 @@ public class ErrorHandlingMiddleware
         {
             case ValidationException validationEx:
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
-                response.Message = "Помилка валідації";
+                response.Message = "Validation error";
                 response.Details = validationEx.Errors;
                 break;
 
@@ -52,12 +52,24 @@ public class ErrorHandlingMiddleware
 
             case UnauthorizedException unauthorizedEx:
                 response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                response.Message = "Помилка авторизації";
+                response.Message = "Authorization error";
+                break;
+
+            case ArgumentNullException argNullEx:
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = $"Required parameter cannot be null: {argNullEx.ParamName}";
+                response.Details = new { ParameterName = argNullEx.ParamName };
+                break;
+
+            case ArgumentException argumentEx:
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = argumentEx.Message;
+                response.Details = new { ParameterName = argumentEx.ParamName };
                 break;
 
             default:
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                response.Message = "Внутрішня помилка сервера";
+                response.Message = "Internal server error";
                 break;
         }
 
