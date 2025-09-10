@@ -5,9 +5,8 @@ namespace BankingSystem.BLL.Utils;
 
 internal static class CustomMapper
 {
-    public static AccountDTO? AccountToDto(Account? account)
+    public static AccountDTO AccountToDto(Account account)
     {
-        if (account is null) return null;
 
         return new AccountDTO
             (account.Id, 
@@ -17,10 +16,8 @@ internal static class CustomMapper
             account.CreationTime);
     }
 
-    public static TransactionDTO? TransactionToDto(Transaction? transaction)
+    public static TransactionDTO TransactionToDto(Transaction transaction)
     {
-        if (transaction is null) return null;
-
         if (transaction is TransferTransaction transferTransaction)
         {
             return new TransferTransactionDTO

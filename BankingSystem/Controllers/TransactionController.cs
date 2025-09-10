@@ -23,20 +23,8 @@ public class TransactionController(ITransactionService transactionService) : Con
     [ProducesResponseType(500)]
     public async Task<ActionResult<TransactionDTO>> Withdraw([FromBody] TransactionCreateRequest request)
     {
-        try
-        {
-            var transaction = await transactionService.WithdrawAsync(request.Target, request.Amount);
-            return Ok(transaction);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-        catch
-        {
-            return StatusCode(500, new { message = "An internal server error occurred" });
-        }
-        
+        var transaction = await transactionService.WithdrawAsync(request.TargetNumber, request.Amount);
+        return Ok(transaction);
     }
 
     [HttpPost("transfer")]

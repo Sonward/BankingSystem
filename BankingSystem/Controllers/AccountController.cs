@@ -39,22 +39,7 @@ public class AccountController(IAccountService accountService) : ControllerBase
     [ProducesResponseType(500)]
     public async Task<ActionResult<AccountDTO>> CreateAsync(AccountCreateRequest request)
     {
-        try
-        {
-            var account = await accountService.CreateAccountAsync(request);
-            return Ok(account);
-        }
-        catch (ArgumentNullException ex)
-        {
-            return BadRequest($"Обов'язковий параметр відсутній: {ex.ParamName}");
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest($"Невірний параметр: {ex.Message}");
-        }
-        catch
-        {
-            return StatusCode(500, "Внутрішня помилка сервера");
-        }
+        var account = await accountService.CreateAccountAsync(request);
+        return Ok(account);
     }
 }
