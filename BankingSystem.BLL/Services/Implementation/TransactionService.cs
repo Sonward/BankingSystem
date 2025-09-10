@@ -91,15 +91,15 @@ public class TransactionService
         await accountRepository.UpdateAsync(entityFrom);
         await accountRepository.UpdateAsync(entityTo);
 
-        var result = await transactionRepository.CreateAsync(new TransferTransaction()
+        var result = (TransferTransaction) await transactionRepository.CreateAsync(new TransferTransaction()
         {
             AccountNumber = targetFromNumber,
             Amount = amount,
             TransactinType = TransactionType.Transfer,
             TransferToAccountNumber = targetToNumber
-        }) as TransferTransaction;
+        });
 
-        return CustomMapper.TransactionToDto(result) as TransferTransactionDTO;
+        return (TransferTransactionDTO) CustomMapper.TransactionToDto(result);
     }
 
     public async Task<ICollection<TransactionDTO>> GetByAccountNumber(string accountNumber)
