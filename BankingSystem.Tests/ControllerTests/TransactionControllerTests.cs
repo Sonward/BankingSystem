@@ -29,7 +29,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 500m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 500m);
 
         // Act
         var result = await _controller.Deposit(request);
@@ -51,7 +51,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 0m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 0m);
 
         // Act
         var result = await _controller.Deposit(request);
@@ -70,7 +70,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, -100m);
+        var request = new TransactionCreateRequest(targetAccount.Number, -100m);
 
         // Act
         var result = await _controller.Deposit(request);
@@ -89,7 +89,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 300m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 300m);
 
         // Act
         var result = await _controller.Withdraw(request);
@@ -111,7 +111,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 0m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 0m);
 
         // Act
         var result = await _controller.Withdraw(request);
@@ -130,7 +130,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 2000m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 2000m);
 
         // Act
         var result = await _controller.Withdraw(request);
@@ -151,7 +151,7 @@ public class TransactionControllerTests
         // Arrange
         var sourceAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("Jane Smith", 500m));
-        var request = new TransferTransactionCreateRequest(sourceAccount, targetAccount, 250m);
+        var request = new TransferTransactionCreateRequest(sourceAccount.Number, targetAccount.Number, 250m);
 
         // Act
         var result = await _controller.Transfer(request);
@@ -175,7 +175,7 @@ public class TransactionControllerTests
         // Arrange
         var sourceAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("Jane Smith", 500m));
-        var request = new TransferTransactionCreateRequest(targetAccount, sourceAccount, 0m);
+        var request = new TransferTransactionCreateRequest(targetAccount.Number, sourceAccount.Number, 0m);
 
         // Act
         var result = await _controller.Transfer(request);
@@ -194,7 +194,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var account = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransferTransactionCreateRequest(account, account, 100m);
+        var request = new TransferTransactionCreateRequest(account.Number, account.Number, 100m);
 
         // Act
         var result = await _controller.Transfer(request);
@@ -214,7 +214,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 500m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 500m);
 
         // Act
         var result = await _controller.Deposit(request);
@@ -230,7 +230,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 300m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 300m);
 
         // Act
         var result = await _controller.Withdraw(request);
@@ -247,7 +247,7 @@ public class TransactionControllerTests
         // Arrange
         var sourceAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("Jane Smith", 500m));
-        var request = new TransferTransactionCreateRequest(sourceAccount, targetAccount, 250m);
+        var request = new TransferTransactionCreateRequest(sourceAccount.Number, targetAccount.Number, 250m);
 
         // Act
         var result = await _controller.Transfer(request);
@@ -263,7 +263,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 500m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 500m);
 
         // Act
         var result = await _controller.Deposit(request);
@@ -279,7 +279,7 @@ public class TransactionControllerTests
     {
         // Arrange
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
-        var request = new TransactionCreateRequest(targetAccount, 300m);
+        var request = new TransactionCreateRequest(targetAccount.Number, 300m);
 
         // Act
         var result = await _controller.Withdraw(request);
@@ -296,7 +296,7 @@ public class TransactionControllerTests
         // Arrange
         var sourceAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("John Doe", 1000m));
         var targetAccount = await _fixture.AccountService.CreateAccountAsync(new AccountCreateRequest("Jane Smith", 500m));
-        var request = new TransferTransactionCreateRequest(sourceAccount, targetAccount, 250m);
+        var request = new TransferTransactionCreateRequest(sourceAccount.Number, targetAccount.Number, 250m);
 
         // Act
         var result = await _controller.Transfer(request);

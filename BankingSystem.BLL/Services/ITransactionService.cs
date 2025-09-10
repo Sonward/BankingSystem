@@ -6,7 +6,7 @@ public interface ITransactionService
 {
     public Task<TransactionDTO> GetTransactionById(Guid id);
     public Task<ICollection<TransactionDTO>> GetByAccountNumber(string accountNumber);
-    public Task<TransactionDTO> DepositAsync(AccountDTO target, decimal amount);
-    public Task<TransactionDTO> WithdrawAsync(AccountDTO target, decimal amount);
-    public Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount);
+    public Task<TransactionDTO> DepositAsync(string targetNumber, decimal amount);
+    public Task<TransactionDTO> WithdrawAsync(string targetNumber, decimal amount);
+    public Task<TransferTransactionDTO> TransferAsync(string targetFromNumber, string targetToNumber, decimal amount);
 }

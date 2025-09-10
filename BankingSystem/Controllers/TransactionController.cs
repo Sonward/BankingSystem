@@ -13,7 +13,7 @@ public class TransactionController(ITransactionService transactionService) : Con
     [ProducesResponseType(200, Type = typeof(TransactionDTO))]
     public async Task<ActionResult<TransactionDTO>> Deposit([FromBody] TransactionCreateRequest request)
     {
-        var transaction = await transactionService.DepositAsync(request.Target, request.Amount);
+        var transaction = await transactionService.DepositAsync(request.TargetNumber, request.Amount);
         return Ok(transaction);
     }
 
@@ -31,7 +31,7 @@ public class TransactionController(ITransactionService transactionService) : Con
     [ProducesResponseType(200, Type = typeof(TransferTransactionDTO))]
     public async Task<ActionResult<TransferTransactionDTO>> Transfer([FromBody] TransferTransactionCreateRequest request)
     {
-        var transaction = await transactionService.TransferAsync(request.TargetFrom, request.TargetTo, request.Amount);
+        var transaction = await transactionService.TransferAsync(request.TargetFromNumber, request.TargetToNumber, request.Amount);
         return Ok(transaction);
     }
 }

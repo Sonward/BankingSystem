@@ -4,14 +4,14 @@ namespace BankingSystem.DTO.Requests;
 
 public record TransferTransactionCreateRequest
 {
-    public TransferTransactionCreateRequest(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
+    public TransferTransactionCreateRequest(string targetFromNumber, string targetToNumber, decimal amount)
     {
-        TargetFrom = targetFrom;
-        TargetTo = targetTo;
+        TargetFromNumber = targetFromNumber;
+        TargetToNumber = targetToNumber;
         Amount = amount;
     }
 
-    public AccountDTO TargetFrom { get; }
-    public AccountDTO TargetTo { get; }
+    public string TargetFromNumber { get; }
+    public string TargetToNumber { get; }
     public decimal Amount { get; }
 }

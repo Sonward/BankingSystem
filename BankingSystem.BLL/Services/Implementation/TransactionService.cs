@@ -1,4 +1,5 @@
 ﻿using BankingSystem.BLL.Utils;
+using BankingSystem.Common.Exceptions;
 using BankingSystem.DAL.Entities;
 using BankingSystem.DAL.Repositories;
 using BankingSystem.DTO.EntityDTO;
@@ -14,20 +15,24 @@ public class TransactionService
         return CustomMapper.TransactionToDto(await transactionRepository.GetByIdAsync(id));
     }
 
-    public async Task<TransactionDTO> DepositAsync(AccountDTO target, decimal amount)
+    public async Task<TransactionDTO> DepositAsync(string targetNumber, decimal amount)
     {
-        if (target is null)
+        if (targetNumber is null)
         {
-            throw new ArgumentNullException(nameof(target));
+            throw new ArgumentNullException(nameof(targetNumber));
+        }
+        if (amount <= 0)
+        {
+            throw new ArgumentException("Deposit amount cannot be less than or equal to zero.");
         }
 
-        var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
+        var entity = await accountRepository.GetByAccountNumberAsync(targetNumber);
         entity.Balance += amount;
         await accountRepository.UpdateAsync(entity);
 
         var result = await transactionRepository.CreateAsync(new Transaction()
         {
-            AccountNumber = target.Number,
+            AccountNumber = targetNumber,
             Amount = amount,
             TransactinType = TransactionType.Deposit
         });
@@ -35,14 +40,18 @@ public class TransactionService
         return CustomMapper.TransactionToDto(result);
     }
 
-    public async Task<TransactionDTO> WithdrawAsync(AccountDTO target, decimal amount)
+    public async Task<TransactionDTO> WithdrawAsync(string targetNumber, decimal amount)
     {
-        if (target is null)
+        if (targetNumber is null)
         {
-            throw new ArgumentNullException(nameof(target));
+            throw new ArgumentNullException(nameof(targetNumber));
+        }
+        if (amount <= 0)
+        {
+            throw new ArgumentException("Withdraw amount cannot be less than or equal to zero.");
         }
 
-        var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
+        var entity = await accountRepository.GetByAccountNumberAsync(targetNumber);
         if (entity.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
 
         entity.Balance -= amount;
@@ -50,7 +59,7 @@ public class TransactionService
 
         var result = await transactionRepository.CreateAsync(new Transaction()
         {
-            AccountNumber = target.Number,
+            AccountNumber = targetNumber,
             Amount = amount,
             TransactinType = TransactionType.Withdraw
         });
@@ -58,19 +67,23 @@ public class TransactionService
         return CustomMapper.TransactionToDto(result);
     }
 
-    public async Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
+    public async Task<TransferTransactionDTO> TransferAsync(string targetFromNumber, string targetToNumber, decimal amount)
     {
-        if (targetFrom is null)
+        if (targetFromNumber is null)
         {
-            throw new ArgumentNullException(nameof(targetFrom));
+            throw new ArgumentNullException(nameof(targetFromNumber));
         }
-        if (targetTo is null)
+        if (targetToNumber is null)
         {
-            throw new ArgumentNullException(nameof(targetTo));
+            throw new ArgumentNullException(nameof(targetToNumber));
+        }
+        if (amount <= 0)
+        {
+            throw new ArgumentException("Transfer amount cannot be less than or equal to zero.");
         }
 
-        var entityFrom = await accountRepository.GetByAccountNumberAsync(targetFrom.Number);
-        var entityTo = await accountRepository.GetByAccountNumberAsync(targetTo.Number);
+        var entityFrom = await accountRepository.GetByAccountNumberAsync(targetFromNumber);
+        var entityTo = await accountRepository.GetByAccountNumberAsync(targetToNumber);
         if (entityFrom.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
 
         entityFrom.Balance -= amount;
@@ -80,10 +93,10 @@ public class TransactionService
 
         var result = await transactionRepository.CreateAsync(new TransferTransaction()
         {
-            AccountNumber = targetFrom.Number,
+            AccountNumber = targetFromNumber,
             Amount = amount,
             TransactinType = TransactionType.Transfer,
-            TransferToAccountNumber = targetTo.Number
+            TransferToAccountNumber = targetToNumber
         }) as TransferTransaction;
 
         return CustomMapper.TransactionToDto(result) as TransferTransactionDTO;
