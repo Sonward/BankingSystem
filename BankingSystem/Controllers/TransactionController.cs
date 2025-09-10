@@ -3,48 +3,47 @@ using BankingSystem.DTO.EntityDTO;
 using BankingSystem.DTO.Requests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BankingSystem.Controllers
+namespace BankingSystem.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class TransactionController(ITransactionService transactionService) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TransactionController(ITransactionService transactionService) : ControllerBase
+    [HttpPost("deposit")]
+    [ProducesResponseType(200, Type = typeof(TransactionDTO))]
+    public async Task<ActionResult<TransactionDTO>> Deposit([FromBody] TransactionCreateRequest request)
     {
-        [HttpPost("deposit")]
-        [ProducesResponseType(200, Type = typeof(TransactionDTO))]
-        public async Task<ActionResult<TransactionDTO>> Deposit([FromBody] TransactionCreateRequest request)
+        var transaction = await transactionService.DepositAsync(request.Target, request.Amount);
+        return Ok(transaction);
+    }
+
+    [HttpPost("withdraw")]
+    [ProducesResponseType(200, Type = typeof(TransactionDTO))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public async Task<ActionResult<TransactionDTO>> Withdraw([FromBody] TransactionCreateRequest request)
+    {
+        try
         {
-            var transaction = await transactionService.DepositAsync(request.Target, request.Amount);
+            var transaction = await transactionService.WithdrawAsync(request.Target, request.Amount);
             return Ok(transaction);
         }
-
-        [HttpPost("withdraw")]
-        [ProducesResponseType(200, Type = typeof(TransactionDTO))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<ActionResult<TransactionDTO>> Withdraw([FromBody] TransactionCreateRequest request)
+        catch (ArgumentException ex)
         {
-            try
-            {
-                var transaction = await transactionService.WithdrawAsync(request.Target, request.Amount);
-                return Ok(transaction);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch
-            {
-                return StatusCode(500, new { message = "An internal server error occurred" });
-            }
-            
+            return BadRequest(new { message = ex.Message });
         }
-
-        [HttpPost("transfer")]
-        [ProducesResponseType(200, Type = typeof(TransferTransactionDTO))]
-        public async Task<ActionResult<TransferTransactionDTO>> Transfer([FromBody] TransferTransactionCreateRequest request)
+        catch
         {
-            var transaction = await transactionService.TransferAsync(request.TargetFrom, request.TargetTo, request.Amount);
-            return Ok(transaction);
+            return StatusCode(500, new { message = "An internal server error occurred" });
         }
+        
+    }
+
+    [HttpPost("transfer")]
+    [ProducesResponseType(200, Type = typeof(TransferTransactionDTO))]
+    public async Task<ActionResult<TransferTransactionDTO>> Transfer([FromBody] TransferTransactionCreateRequest request)
+    {
+        var transaction = await transactionService.TransferAsync(request.TargetFrom, request.TargetTo, request.Amount);
+        return Ok(transaction);
     }
 }

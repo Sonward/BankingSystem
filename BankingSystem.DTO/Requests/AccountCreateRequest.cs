@@ -1,14 +1,13 @@
-﻿namespace BankingSystem.DTO.Requests
-{
-    public record AccountCreateRequest
-    {
-        public AccountCreateRequest(string ownerName, decimal balance)
-        {
-            OwnerName = ownerName;
-            Balance = balance;
-        }
+﻿namespace BankingSystem.DTO.Requests;
 
-        public string OwnerName { get; }
-        public decimal Balance { get; }
-    };
-}
+public record AccountCreateRequest
+{
+    public AccountCreateRequest(string ownerName, decimal balance)
+    {
+        OwnerName = ownerName;
+        Balance = balance;
+    }
+
+    public string OwnerName { get; }
+    public decimal Balance { get; }
+};

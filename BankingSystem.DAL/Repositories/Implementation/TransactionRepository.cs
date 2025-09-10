@@ -1,43 +1,42 @@
 ﻿using BankingSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankingSystem.DAL.Repositories.Implementation
+namespace BankingSystem.DAL.Repositories.Implementation;
+
+public class TransactionRepository(AppDbContext dbContext) : ITransactionRepository
 {
-    public class TransactionRepository(AppDbContext dbContext) : ITransactionRepository
+    public async Task<Transaction> CreateAsync(Transaction transaction)
     {
-        public async Task<Transaction> CreateAsync(Transaction transaction)
+        if (transaction is null)
         {
-            if (transaction is null)
-            {
-                throw new ArgumentNullException(nameof(transaction));
-            }
-
-            var result = await dbContext.Transactions.AddAsync(transaction);
-            await dbContext.SaveChangesAsync();
-            
-            return result.Entity;
+            throw new ArgumentNullException(nameof(transaction));
         }
 
-        public async Task<Transaction> GetByIdAsync(Guid id)
+        var result = await dbContext.Transactions.AddAsync(transaction);
+        await dbContext.SaveChangesAsync();
+        
+        return result.Entity;
+    }
+
+    public async Task<Transaction> GetByIdAsync(Guid id)
+    {
+        var result = await dbContext.Transactions.FindAsync(id);
+
+        if (result is null)
         {
-            var result = await dbContext.Transactions.FindAsync(id);
-
-            if (result is null)
-            {
-                throw new ArgumentNullException($"Cannot find Account with Id: {id}");
-            }
-
-            return result;
+            throw new ArgumentNullException($"Cannot find Account with Id: {id}");
         }
 
-        public async Task<ICollection<Transaction>> GetByAccountNumberAsync(string accountNumber)
+        return result;
+    }
+
+    public async Task<ICollection<Transaction>> GetByAccountNumberAsync(string accountNumber)
+    {
+        if (string.IsNullOrWhiteSpace(accountNumber))
         {
-            if (string.IsNullOrWhiteSpace(accountNumber))
-            {
-                throw new ArgumentException("Account number cannot be null or empty", nameof(accountNumber));
-            }
-            
-            return await dbContext.Transactions.Where(t => t.AccountNumber == accountNumber).ToListAsync();
+            throw new ArgumentException("Account number cannot be null or empty", nameof(accountNumber));
         }
+        
+        return await dbContext.Transactions.Where(t => t.AccountNumber == accountNumber).ToListAsync();
     }
 }

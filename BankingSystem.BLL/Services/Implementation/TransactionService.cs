@@ -3,97 +3,96 @@ using BankingSystem.DAL.Entities;
 using BankingSystem.DAL.Repositories;
 using BankingSystem.DTO.EntityDTO;
 
-namespace BankingSystem.BLL.Services.Implementation
+namespace BankingSystem.BLL.Services.Implementation;
+
+public class TransactionService
+    (IAccountRepository accountRepository,
+    ITransactionRepository transactionRepository) : ITransactionService
 {
-    public class TransactionService
-        (IAccountRepository accountRepository,
-        ITransactionRepository transactionRepository) : ITransactionService
+    public async Task<TransactionDTO> GetTransactionById(Guid id)
     {
-        public async Task<TransactionDTO> GetTransactionById(Guid id)
+        return CustomMapper.TransactionToDto(await transactionRepository.GetByIdAsync(id));
+    }
+
+    public async Task<TransactionDTO> DepositAsync(AccountDTO target, decimal amount)
+    {
+        if (target is null)
         {
-            return CustomMapper.TransactionToDto(await transactionRepository.GetByIdAsync(id));
+            throw new ArgumentNullException(nameof(target));
         }
 
-        public async Task<TransactionDTO> DepositAsync(AccountDTO target, decimal amount)
+        var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
+        entity.Balance += amount;
+        await accountRepository.UpdateAsync(entity);
+
+        var result = await transactionRepository.CreateAsync(new Transaction()
         {
-            if (target is null)
-            {
-                throw new ArgumentNullException(nameof(target));
-            }
+            AccountNumber = target.Number,
+            Amount = amount,
+            TransactinType = TransactionType.Deposit
+        });
 
-            var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
-            entity.Balance += amount;
-            await accountRepository.UpdateAsync(entity);
+        return CustomMapper.TransactionToDto(result);
+    }
 
-            var result = await transactionRepository.CreateAsync(new Transaction()
-            {
-                AccountNumber = target.Number,
-                Amount = amount,
-                TransactinType = TransactionType.Deposit
-            });
-
-            return CustomMapper.TransactionToDto(result);
+    public async Task<TransactionDTO> WithdrawAsync(AccountDTO target, decimal amount)
+    {
+        if (target is null)
+        {
+            throw new ArgumentNullException(nameof(target));
         }
 
-        public async Task<TransactionDTO> WithdrawAsync(AccountDTO target, decimal amount)
+        var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
+        if (entity.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
+
+        entity.Balance -= amount;
+        await accountRepository.UpdateAsync(entity);
+
+        var result = await transactionRepository.CreateAsync(new Transaction()
         {
-            if (target is null)
-            {
-                throw new ArgumentNullException(nameof(target));
-            }
+            AccountNumber = target.Number,
+            Amount = amount,
+            TransactinType = TransactionType.Withdraw
+        });
 
-            var entity = await accountRepository.GetByAccountNumberAsync(target.Number);
-            if (entity.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
+        return CustomMapper.TransactionToDto(result);
+    }
 
-            entity.Balance -= amount;
-            await accountRepository.UpdateAsync(entity);
-
-            var result = await transactionRepository.CreateAsync(new Transaction()
-            {
-                AccountNumber = target.Number,
-                Amount = amount,
-                TransactinType = TransactionType.Withdraw
-            });
-
-            return CustomMapper.TransactionToDto(result);
+    public async Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
+    {
+        if (targetFrom is null)
+        {
+            throw new ArgumentNullException(nameof(targetFrom));
+        }
+        if (targetTo is null)
+        {
+            throw new ArgumentNullException(nameof(targetTo));
         }
 
-        public async Task<TransferTransactionDTO> TransferAsync(AccountDTO targetFrom, AccountDTO targetTo, decimal amount)
+        var entityFrom = await accountRepository.GetByAccountNumberAsync(targetFrom.Number);
+        var entityTo = await accountRepository.GetByAccountNumberAsync(targetTo.Number);
+        if (entityFrom.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
+
+        entityFrom.Balance -= amount;
+        entityTo.Balance += amount;
+        await accountRepository.UpdateAsync(entityFrom);
+        await accountRepository.UpdateAsync(entityTo);
+
+        var result = await transactionRepository.CreateAsync(new TransferTransaction()
         {
-            if (targetFrom is null)
-            {
-                throw new ArgumentNullException(nameof(targetFrom));
-            }
-            if (targetTo is null)
-            {
-                throw new ArgumentNullException(nameof(targetTo));
-            }
+            AccountNumber = targetFrom.Number,
+            Amount = amount,
+            TransactinType = TransactionType.Transfer,
+            TransferToAccountNumber = targetTo.Number
+        }) as TransferTransaction;
 
-            var entityFrom = await accountRepository.GetByAccountNumberAsync(targetFrom.Number);
-            var entityTo = await accountRepository.GetByAccountNumberAsync(targetTo.Number);
-            if (entityFrom.Balance < amount) throw new ArgumentException("Balance is lower that withdrawing amount");
+        return CustomMapper.TransactionToDto(result) as TransferTransactionDTO;
+    }
 
-            entityFrom.Balance -= amount;
-            entityTo.Balance += amount;
-            await accountRepository.UpdateAsync(entityFrom);
-            await accountRepository.UpdateAsync(entityTo);
-
-            var result = await transactionRepository.CreateAsync(new TransferTransaction()
-            {
-                AccountNumber = targetFrom.Number,
-                Amount = amount,
-                TransactinType = TransactionType.Transfer,
-                TransferToAccountNumber = targetTo.Number
-            }) as TransferTransaction;
-
-            return CustomMapper.TransactionToDto(result) as TransferTransactionDTO;
-        }
-
-        public async Task<ICollection<TransactionDTO>> GetByAccountNumber(string accountNumber)
-        {
-            return (await transactionRepository.GetByAccountNumberAsync(accountNumber))
-                .Select(t => CustomMapper.TransactionToDto(t))
-                .ToList();
-        }
+    public async Task<ICollection<TransactionDTO>> GetByAccountNumber(string accountNumber)
+    {
+        return (await transactionRepository.GetByAccountNumberAsync(accountNumber))
+            .Select(t => CustomMapper.TransactionToDto(t))
+            .ToList();
     }
 }

@@ -1,16 +1,15 @@
 ﻿using BankingSystem.DTO.EntityDTO;
 
-namespace BankingSystem.DTO.Requests
-{
-    public record TransactionCreateRequest
-    {
-        public TransactionCreateRequest(AccountDTO target, decimal amount)
-        {
-            Target = target;
-            Amount = amount;
-        }
+namespace BankingSystem.DTO.Requests;
 
-        public AccountDTO Target { get; }
-        public decimal Amount { get; }
+public record TransactionCreateRequest
+{
+    public TransactionCreateRequest(AccountDTO target, decimal amount)
+    {
+        Target = target;
+        Amount = amount;
     }
+
+    public AccountDTO Target { get; }
+    public decimal Amount { get; }
 }

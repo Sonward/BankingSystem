@@ -24,8 +24,4 @@
     <ProjectReference Include="..\BankingSystem.Common\BankingSystem.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
 </Project>

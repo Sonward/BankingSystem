@@ -1,7 +1,6 @@
-﻿namespace BankingSystem.Common.Exceptions
-{
-    public class UnauthorizedException : Exception
-    {
+﻿namespace BankingSystem.Common.Exceptions;
 
-    }
+public class UnauthorizedException : Exception
+{
+
 }

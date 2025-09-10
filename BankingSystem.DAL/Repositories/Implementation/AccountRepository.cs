@@ -1,71 +1,70 @@
 ﻿using BankingSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankingSystem.DAL.Repositories.Implementation
+namespace BankingSystem.DAL.Repositories.Implementation;
+
+public class AccountRepository(AppDbContext dbContext) : IAccountRepository
 {
-    public class AccountRepository(AppDbContext dbContext) : IAccountRepository
+    public async Task<ICollection<Account>> GetAllAsync()
     {
-        public async Task<ICollection<Account>> GetAllAsync()
+        return await dbContext.Accounts.ToListAsync();
+    }
+
+    public async Task<Account> GetByIdAsync(Guid id)
+    {
+        var result = await dbContext.Accounts.FindAsync(id);
+
+        if (result is null)
         {
-            return await dbContext.Accounts.ToListAsync();
+            throw new ArgumentNullException($"Cannot find Account with Id: {id}");
         }
 
-        public async Task<Account> GetByIdAsync(Guid id)
+        return result;
+    }
+
+    public async Task<Account?> GetByAccountNumberAsync(string accountNumber)
+    {
+        var result = await dbContext.Accounts.FirstOrDefaultAsync(a => a.Number == accountNumber);
+
+        return result;
+    }
+
+    public async Task<Account> CreateAsync(Account account)
+    {
+        if (account is null)
         {
-            var result = await dbContext.Accounts.FindAsync(id);
-
-            if (result is null)
-            {
-                throw new ArgumentNullException($"Cannot find Account with Id: {id}");
-            }
-
-            return result;
+            throw new ArgumentNullException(nameof(account));
         }
 
-        public async Task<Account?> GetByAccountNumberAsync(string accountNumber)
-        {
-            var result = await dbContext.Accounts.FirstOrDefaultAsync(a => a.Number == accountNumber);
+        var result = await dbContext.Accounts.AddAsync(account);
+        await dbContext.SaveChangesAsync();
+        
+        return result.Entity;
+    }
 
-            return result;
+    public async Task<Account> UpdateAsync(Account account)
+    {
+        var entity = await dbContext.Accounts.FindAsync(account.Id);
+        if (entity is null)
+        {
+            throw new ArgumentNullException($"Cannot find Account with Id: {account.Id}");
         }
 
-        public async Task<Account> CreateAsync(Account account)
+        dbContext.Accounts.Entry(entity).CurrentValues.SetValues(account);
+        await dbContext.SaveChangesAsync();
+
+        return entity;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entity = await dbContext.Accounts.FindAsync(id);
+        if (entity is null)
         {
-            if (account is null)
-            {
-                throw new ArgumentNullException(nameof(account));
-            }
-
-            var result = await dbContext.Accounts.AddAsync(account);
-            await dbContext.SaveChangesAsync();
-            
-            return result.Entity;
+            throw new ArgumentNullException($"Cannot find Account with Id: {id}");
         }
-
-        public async Task<Account> UpdateAsync(Account account)
-        {
-            var entity = await dbContext.Accounts.FindAsync(account.Id);
-            if (entity is null)
-            {
-                throw new ArgumentNullException($"Cannot find Account with Id: {account.Id}");
-            }
-
-            dbContext.Accounts.Entry(entity).CurrentValues.SetValues(account);
-            await dbContext.SaveChangesAsync();
-
-            return entity;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var entity = await dbContext.Accounts.FindAsync(id);
-            if (entity is null)
-            {
-                throw new ArgumentNullException($"Cannot find Account with Id: {id}");
-            }
-            dbContext.Accounts.Remove(entity);
-            
-            return await dbContext.SaveChangesAsync() > 0;
-        }
+        dbContext.Accounts.Remove(entity);
+        
+        return await dbContext.SaveChangesAsync() > 0;
     }
 }
